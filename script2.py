@@ -8,14 +8,16 @@ def create_table():
     conn.close()
 
 def insert(item, quantity, price):
-    conn = psycopg2.connect("lite.db")
+    conn = psycopg2.connect("dbname='database1' user='postgres' password='postgres123' host='localhost' port='5432'")
     cur = conn.cursor()
-    cur.execute("INSERT INTO store VALUES(?,?,?)",(item,quantity,price))
+   #Can get sql injection cur.execute("INSERT INTO store VALUES('%s','%s','%s')" % (item,quantity,price))
+    cur.execute("INSERT INTO store VALUES(%s,%s,%s)",(item,quantity,price))
+
     conn.commit()
     conn.close()
 
 def view():
-    conn = psycopg2.connect("lite.db")
+    conn = psycopg2.connect("dbname='database1' user='postgres' password='postgres123' host='localhost' port='5432'")
     cur = conn.cursor()
     cur.execute("SELECT * FROM store")
     rows=cur.fetchall()
@@ -37,3 +39,5 @@ def update(quantity,price,item):
     conn.close()
 
 create_table()
+insert("Orange",10,15)
+print(view())
